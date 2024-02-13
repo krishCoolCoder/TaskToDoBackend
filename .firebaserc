@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "tasktodo-backend"
+  },
+  "targets": {
+    "tasktodo-backend": {
+      "hosting": {
+        "tasktodo-app-api": [
+          "app"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,22 @@
+
+{
+  "projects": {},
+  "targets": {
+    "tasktodo-backend": {
+      "hosting": {
+        "app": [
+          "tasktodo-app-api"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "hosting": {
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "app"
+      }
+    ]
+  }
+}
