@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "firebase-tools": "^13.2.1"
+    "firebase-tools": "^13.2.1",
+    "mongodb": "^6.3.0"
   },
   "type": "commonjs"
 }
