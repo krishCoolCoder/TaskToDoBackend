@@ -29,7 +29,7 @@ app.get('/', (req: any, res: any) => {
     res.json({message: 'Hello world. ',task: "Its time to go ahead with your task."});
   });
   app.get('/love', (req: any, res: any) => {
-    res.json({message: 'Hello world. ',task: "Its time to go ahead with your task."});
+    res.json({message: 'I love you. ',task: "I know you are excited to do your tasks now. Go for it. Do the work my love."});
   });
   app.get('/hello', (req: any, res: any) => {
     res.json({message: 'Hello world.',task: "Hi there, now it is time to work on a miracle."});
