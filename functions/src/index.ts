@@ -31,6 +31,9 @@ app.get('/', (req: any, res: any) => {
   app.get('/love', (req: any, res: any) => {
     res.json({message: 'Hello world. ',task: "Its time to go ahead with your task."});
   });
+  app.get('/hello', (req: any, res: any) => {
+    res.json({message: 'Hello world.',task: "Hi there, now it is time to work on a miracle."});
+  });
 
   exports.app = functions.https.onRequest(app);
 
