@@ -3,6 +3,7 @@
 const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://tasktodouser:tasktodouser@tasktodo.ir517qa.mongodb.net/?retryWrites=true&w=majority";
+var app = express();
 
 async function run() {
     try {
@@ -28,7 +29,6 @@ const client = new MongoClient(uri, {
     }
   });
 
-const app = express();
 
 app.get('/', (req: any, res: any) => {
     const date = new Date();

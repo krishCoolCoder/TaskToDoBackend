@@ -3,6 +3,8 @@ import * as logger from "firebase-functions/logger";
 const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://tasktodouser:tasktodouser@tasktodo.ir517qa.mongodb.net/?retryWrites=true&w=majority";
+// Controllers
+const login = require('./controller/login/loginController')
 
 async function run() {
     try {
@@ -10,7 +12,7 @@ async function run() {
       await client.connect();
       // Send a ping to confirm a successful connection
       await client.db("admin").command({ ping: 1 });
-      logger.info("Pinged your deployment. You successfully connected to MongoDB!", {structuredData: true});
+      logger.info("Freaking pinged your deployment. You successfully connected to MongoDB!", {structuredData: true});
       console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
       // Ensures that the client will close when you finish/error
@@ -29,6 +31,7 @@ const client = new MongoClient(uri, {
   });
 
 const app = express();
+app.use(login);
 
 app.get('/', (req: any, res: any) => {
     const date = new Date();
