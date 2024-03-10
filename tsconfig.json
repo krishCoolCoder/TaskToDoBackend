@@ -1,11 +1,21 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "esModuleInterop": true,
-      "target": "es6",
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "outDir": "dist"
-    },
-    "lib": ["es2015"]
-  }
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": false,                  // Enable strict type checking
+    "noImplicitAny": false,           // Raise error on expressions and declarations with an implied 'any' type
+    "strictNullChecks": true,        // Enable strict null checks
+    "strictFunctionTypes": true,     // Enable strict checking of function types
+    "noUnusedLocals": false,          // Report errors on unused local variables
+    "noUnusedParameters": false,      // Report errors on unused parameters
+    "noImplicitReturns": true,       // Report error when not all code paths in function return a value
+    "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statement
+    // "esModuleInterop": true,         // Enables emit interoperability between CommonJS and ES Modules
+    "forceConsistentCasingInFileNames": true // Ensure that casing is consistent in file names
+  },
+  "lib": ["es2015"]
+}
