@@ -13,8 +13,14 @@ import { authenticationMiddleware } from './source/middleware/AuthenticationMidd
 connectDB();
 
 app.use(authenticationMiddleware);
-app.use("/user",require("./source/loginController/loginController"))
+app.use("/",require("./source/loginController/loginController"))
 app.use("/task",require("./source/taskTodo/TaskTodoController"))
+app.use("/query",require("./source/query/QueryController"))
+app.use("/request",require("./source/request/RequestController"))
+app.use("/todo",require("./source/todo/Todo"))
+app.use("/user",require("./source/user/UserController"))
+app.use("/organisation",require("./source/organisation/OrganisationController"))
+app.use("/team",require("./source/team/TeamController"))
 
 
 
