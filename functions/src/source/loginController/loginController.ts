@@ -62,27 +62,39 @@ router.post("/login", async function (req: any, res: any) {
         }
       ]).exec();
       
-    userData["tokenCreatedAt"] = Date.now();
     console.log("The userData is this : ", userData, " and the query is this : ",{
         email : req.body.userMail,
         password : req.body.userPassword
     } , " the date now is this : ", Date.now(), " and the req.headers.current user is this : ", req.headers.currentUser);
-        if (userData) {
-            res.status(200).send(
-                {
-                    message:"Successfully logged in.",
-                    data : userData,
-                    token : cryptoEncode(userData)
-                }
-                )
-            } else if (userData === null){} 
-            else  {
-                res.status(500).send(
-                    {
-                        message: "Something went wrong, We have reported the issue."
-                    }
-                )
+    if (userData.length !== 0) {
+        userData["tokenCreatedAt"] = Date.now();
+        res.status(200).send(
+            {
+                message:"Successfully logged in.",
+                data : userData,
+                token : cryptoEncode(userData)
             }
+            )
+        } else if (userData === null){
+        res.status(500).send(
+                {
+                    message: "User does is not recognised"
+                }
+            )
+        } else if (userData?.length == 0){
+        res.status(500).send(
+                {
+                    message: "User does is not recognised"
+                }
+            )
+        }
+        else  {
+            res.status(500).send(
+                {
+                    message: "Something went wrong, We have reported the issue."
+                }
+            )
+        }
 });
 
 router.get("/get", async function (req : any, res: any) {
