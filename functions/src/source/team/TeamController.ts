@@ -126,7 +126,39 @@ router.patch("/updateTeam",async function (req : any, res: any){
 
 router.get("/teamList", async function (req: any, res: any){
     try {
-        let teamList = await Team.find({}).sort({teamCreatedAt : -1});
+        // let teamList = await Team.find({}).sort({teamCreatedAt : -1});
+        let query;
+        if (req.query.hasOwnProperty("organisationId")){
+            query = {
+                "teamOrganisationMappings.organisationId":mongoose.Types.ObjectId.createFromHexString(req.query?.organisationId),
+                "teamOrganisationMappings.userId" : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+            }
+        } else {
+            query = {
+                "teamOrganisationMappings.organisationId":mongoose.Types.ObjectId.createFromHexString(req.query?.organisationId),
+                "teamOrganisationMappings.userId" : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+            }
+        }
+        let teamList = await Team.aggregate(
+            [
+                {
+                    $match : {}
+                },
+                {
+                    $lookup : {
+                        from : "userteammappings",
+                        localField : "_id",
+                        foreignField: "teamId",
+                        as : "teamOrganisationMappings"
+                    }
+                }, 
+                {
+                    $match : query
+                }
+            ]
+            );
+            // console.log("The query is this : ", query)
+            // console.log("The tempData is this : ", teamList)
         if (teamList) {
                     return res.status(200).send(
                         {

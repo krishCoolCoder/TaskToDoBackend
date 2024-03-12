@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 
 var router = require("express").Router();
 
-let Organisation = require("../model/Organisation")
+let Organisation = require("../model/Organisation");
+let UserOrganisationMapping = require("../model/userOrgansiationMapping");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -32,6 +33,15 @@ router.post("/createOrganisation",async function (req : any, res: any){
             organisationCreatedBy : req.headers?.currentUser?._id,
             organisationCreatedAt : Date.now()
         }).save();
+        let userOrganisationMappingData = await new UserOrganisationMapping(
+            {
+                userId : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id),
+                organisationId : organisationData?._id,
+                userOrganisationMappingCreatedBy: mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id),
+                userOrganisationMappingCreatedAt: Date.now()
+            }
+        ).save();
+        console.log("The userOrganisationMappingData is this : ", userOrganisationMappingData);
         if (organisationData) {
                     return res.status(200).send(
                         {
@@ -124,7 +134,27 @@ router.patch("/updateOrganisation",async function (req : any, res: any){
 
 router.get("/organisationList", async function (req: any, res: any){
     try {
-        let organisationList = await Organisation.find({}).sort({organisationCreatedAt : -1});
+        // let organisationList = await Organisation.find({}).sort({organisationCreatedAt : -1});
+        let organisationList = await Organisation.aggregate(
+            [
+                {
+                    $match : {}
+                },
+                {
+                    $lookup : {
+                        from : "userorganisationmappings",
+                        localField : "_id",
+                        foreignField: "organisationId",
+                        as : "userOrganisationMappings"
+                    }
+                }, 
+                {
+                    $match : {
+                        "userOrganisationMappings.userId" : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+                    }
+                }
+            ]
+            );
         if (organisationList) {
                     return res.status(200).send(
                         {
