@@ -2,9 +2,6 @@ const bodyParser = require("body-parser");
 import mongoose from "mongoose";
 
 var router = require("express").Router();
-
-// let { cryptoEncode, cryptoDecode } = require("../utility/utils");
-// let UserModel = require("../model/user");
 let TaskToDo = require("../model/TaskToDo")
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -25,16 +22,6 @@ router.post("/createTask",async function (req : any, res: any){
                 message : "Task title cannot be empty or undefined."
             })
         }
-        if ((!req.body.teamRef || req.body.teamRef == "")) {
-            return res.status(400).send({
-                message : "Team reference cannot be empty or undefined."
-            })
-        }
-        if ((!req.body.organisationRef || req.body.organisationRef == "")) {
-            return res.status(400).send({
-                message : "Organisation reference cannot be empty or undefined."
-            })
-        }
 
         let taskToDoData = await new TaskToDo({
             taskNo : Math.floor(Math.random() * 9000) + 1000,
@@ -42,9 +29,9 @@ router.post("/createTask",async function (req : any, res: any){
             taskDescription : req.body?.taskDescription,
             taskStatus : req.body.taskStatus,
             taskProgress : req.body?.taskProgress,
-            teamRef : req.body?.teamRef || "default team",
-            organisationRef : req.body?.organisationRef || "default organisation",
-            taskCreatedBy : req.headers?.currentUser?.userId,
+            teamRef : req.body?.teamRef || 1,
+            organisationRef : req.body?.organisationRef || 1,
+            taskCreatedBy : req.headers?.currentUser?._id,
             taskCreatedAt : Date.now()
         }).save();
         if (taskToDoData) {
@@ -93,16 +80,6 @@ router.patch("/updateTask",async function (req : any, res: any){
                 message : "Task title cannot be empty or undefined."
             })
         }
-        if ((!req.body.teamRef || req.body.teamRef == "")) {
-            return res.status(400).send({
-                message : "Team reference cannot be empty or undefined."
-            })
-        }
-        if ((!req.body.organisationRef || req.body.organisationRef == "")) {
-            return res.status(400).send({
-                message : "Organisation reference cannot be empty or undefined."
-            })
-        }
 
         let taskToDoData = await TaskToDo.findOneAndUpdate(
             {_id : mongoose.Types.ObjectId.createFromHexString(req.body.id)},
@@ -113,9 +90,9 @@ router.patch("/updateTask",async function (req : any, res: any){
                     taskDescription : req.body?.taskDescription,
                     taskStatus : req.body.taskStatus,
                     taskProgress : req.body?.taskProgress,
-                    teamRef : req.body?.teamRef || "default team",
-                    organisationRef : req.body?.organisationRef || "default organisation",
-                    taskUpdatedBy : req.headers?.currentUser?.userId,
+                    teamRef : req.body?.teamRef || 1,
+                    organisationRef : req.body?.organisationRef || 1,
+                    taskUpdatedBy : req.headers?.currentUser?._id,
                     taskUpdatedAt : Date.now()
                 }
         },

@@ -29,7 +29,7 @@ router.post("/createOrganisation",async function (req : any, res: any){
             organisationName : req.body?.organisationName,
             organisationDescription : req.body?.organisationDescription,
             organisationType : req.body?.organisationType,
-            organisationCreatedBy : req.headers?.currentUser?.userId,
+            organisationCreatedBy : req.headers?.currentUser?._id,
             organisationCreatedAt : Date.now()
         }).save();
         if (organisationData) {
@@ -87,7 +87,7 @@ router.patch("/updateOrganisation",async function (req : any, res: any){
                     organisationName : req.body?.organisationName,
                     organisationDescription : req.body?.organisationDescription,
                     organisationType : req.body?.organisationType,
-                    organisationUpdatedBy : req.headers?.currentUser?.userId,
+                    organisationUpdatedBy : req.headers?.currentUser?._id,
                     organisationUpdatedAt : Date.now()
                 }
         },

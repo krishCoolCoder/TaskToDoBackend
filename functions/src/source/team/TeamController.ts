@@ -30,7 +30,7 @@ router.post("/createTeam",async function (req : any, res: any){
             teamDescription : req.body?.teamDescription,
             teamStatus : req.body?.teamStatus,
             teamOrganisationRef : req.body?.teamOrganisationRef,
-            teamCreatedBy : req.headers?.currentUser?.userId,
+            teamCreatedBy : req.headers?.currentUser?._id,
             teamCreatedAt : Date.now()
         }).save();
         if (teamData) {
@@ -89,7 +89,7 @@ router.patch("/updateTeam",async function (req : any, res: any){
                     teamDescription : req.body?.teamDescription,
                     teamStatus : req.body?.teamStatus,
                     teamOrganisationRef : req.body?.teamOrganisationRef,
-                    teamUpdatedBy : req.headers?.currentUser?.userId,
+                    teamUpdatedBy : req.headers?.currentUser?._id,
                     teamUpdatedAt : Date.now()
                 }
         },

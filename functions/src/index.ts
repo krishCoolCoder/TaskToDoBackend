@@ -1,10 +1,7 @@
 const functions = require('firebase-functions');
 const express = require('express');
-const login = require('./controller/login/loginController')
-
 
 const app = express();
-app.use(login);
 
 
 

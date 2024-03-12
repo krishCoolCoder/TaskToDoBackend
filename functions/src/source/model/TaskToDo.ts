@@ -9,11 +9,11 @@ const taskToDo = new Schema(
         taskDescription : {type : String, default : ""},
         taskStatus : {type : String, default : ""},
         taskProgress : {type : String, default : ""},
-        teamRef : {type : String, default : ""},
-        organisationRef : {type : String, default : "" },
-        taskUpdatedBy : {type : String, default : ""},
+        teamRef : {type: Number , default: 1},
+        organisationRef : {type: Number , default: 1},
+        taskUpdatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         taskUpdatedAt : {type : String, default : ""},
-        taskCreatedBy : {type : String, default : "" },
+        taskCreatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         taskCreatedAt : {type : String, default : ""}
     }
 );

@@ -8,10 +8,10 @@ const organisationSchema = new Schema(
         organisationName : {type : String, default : null},
         organisationDescription : {type : String, default : null},
         organisationType : {type : String, default : null},
-        organisationUpdatedBy : {type : String, default : null},
+        organisationUpdatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         organisationUpdatedAt : {type : String, default : null},
-        organisationCreatedBy : {type : String, default : null},
-        organisationCreatedAt : {type : String, default : null}
+        organisationCreatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
+        organisationCreatedAt : {type : Number, default : Date.now()}
     }
 )
 

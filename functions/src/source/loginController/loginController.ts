@@ -5,8 +5,8 @@ import * as bodyParser from "body-parser";
 
 var router = require("express").Router();
 
-let UserModel = require("../model/user");
 let { cryptoEncode } = require("../utility/utils");
+let UserModel = require("../model/user");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -19,13 +19,49 @@ router.post("/login", async function (req: any, res: any) {
                 message : "Invalid or missing parameters for login operation."
             }
         )
-    }
-    let userData = await UserModel.findOne(
+    };
+
+    let userData = await UserModel.aggregate([
         {
-            email : req.body.userMail,
-            password : req.body.userPassword
+          $match: {
+            email: req.body.userMail,
+            password: req.body.userPassword
+          }
+        },
+        {
+          $lookup: {
+            from: "userrolemappings",
+            localField: "_id",
+            foreignField: "userId",
+            as: "userRoleMappings"
+          }
+        },
+        {
+          $lookup: {
+            from: "userroles",
+            localField: "userRoleMappings.roleId",
+            foreignField: "_id",
+            as: "userRoles"
+          }
+        },
+        {
+            $project : {
+                _id: 1,
+                userId : 1,
+                userName : 1,
+                firstName : 1,
+                lastName : 1,
+                email : 1,
+                userCreatedBy : 1,
+                userCreatedAt : 1,
+                userUpdatedBy : 1,
+                userUpdatedAt : 1,
+                userRoleMappings : 1,
+                userRoles: 1
+            }
         }
-    ).lean();
+      ]).exec();
+      
     userData["tokenCreatedAt"] = Date.now();
     console.log("The userData is this : ", userData, " and the query is this : ",{
         email : req.body.userMail,

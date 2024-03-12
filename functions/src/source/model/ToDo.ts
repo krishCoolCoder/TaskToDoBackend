@@ -6,11 +6,11 @@ const todo = new Schema(
     {
         todoCode : {type : String, default : ""},
         todoData : {type : String, default : ""},
-        todoTeamRef : {type : String, default : ""},
-        todoOrganisationRef : {type : String, default : ""},
-        todoUpdatedBy : {type : String, default : ""},
+        todoTeamRef : {type: Number , default: 1},
+        todoOrganisationRef : {type: Number , default: 1},
+        todoUpdatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         todoUpdatedAt : {type : String, default : ""},
-        todoCreatedBy : {type : String, default : ""},
+        todoCreatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         todoCreatedAt : {type : String, degault : ""}
     }
 )

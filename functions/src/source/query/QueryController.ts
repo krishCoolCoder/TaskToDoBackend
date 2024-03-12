@@ -41,7 +41,7 @@ router.post("/createQuery",async function (req : any, res: any){
             queryStatus : req.body.queryStatus,
             queryType : req.body?.queryType,
             taskQueryRef : req.body?.taskQueryRef || "default query",
-            queryCreatedBy : req.headers?.currentUser?.userId,
+            queryCreatedBy : req.headers?.currentUser?._id,
             queryCreatedAt : Date.now()
         }).save();
         if (queryData) {
@@ -111,7 +111,7 @@ router.patch("/updateQuery",async function (req : any, res: any){
                     queryStatus : req.body.queryStatus,
                     queryType : req.body?.queryType,
                     taskQueryRef : req.body?.taskQueryRef || "default query",
-                    queryUpdatedBy : req.headers?.currentUser?.userId,
+                    queryUpdatedBy : req.headers?.currentUser?._id,
                     queryUpdatedAt : Date.now()
                 }
         },

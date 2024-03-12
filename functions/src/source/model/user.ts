@@ -9,9 +9,11 @@ const userSchema = new Schema({
     lastName: {type : String, default : null},
     email: {type : String, default : null},
     password: {type : String, default : null},
-    userCreatedBy: {type : String, default : null},
+    userTeamRef: {type: Number, ref: "teams", default : 1},
+    userOrganisationRef: {type: Number, ref: "organisations", default : 1},
+    userCreatedBy: {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
     userCreatedAt: {type : Number, default : Date.now()},
-    userUpdatedBy: {type : String, default : null},
+    userUpdatedBy: {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
     userUpdatedAt: {type : String, default : null},
     // Add more properties as needed
 });

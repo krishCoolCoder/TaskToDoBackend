@@ -9,11 +9,11 @@ const request = new Schema(
         requestDescription : {type : String, default : ""},
         requestType : {type : String, default : ""},
         requestStatus : {type : String, default : ""},
-        requestTeamRef : {type : String, default : ""},
-        requestOrganisationRef : {type : String, default : ""},
-        requestUpdatedBy : {type : String, default : ""},
+        requestTeamRef : {type: Number , default: 1},
+        requestOrganisationRef : {type: Number , default: 1},
+        requestUpdatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         requestUpdatedAt : {type : String, default : ""},
-        requestCreatedBy : {type : String, default : ""},
+        requestCreatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         requestCreatedAt : {type : String, default : "" }
     }
 )

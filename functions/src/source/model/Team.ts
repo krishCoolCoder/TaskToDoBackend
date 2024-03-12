@@ -8,10 +8,10 @@ const teamSchema = new Schema(
         teamName : {type : String, default : null},
         teamDescription : {type : String, default : null},
         teamStatus : {type : String, default : null},
-        teamOrganisationRef : {type: String, default : null},
-        teamUpdatedBy : {type : String, default : null},
+        teamOrganisationRef : {type: Number , default: 1},
+        teamUpdatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         teamUpdatedAt : {type : String, default : null},
-        teamCreatedBy : {type : String, default : null},
+        teamCreatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},
         teamCreatedAt : {type : String, default : null}
     }
 )

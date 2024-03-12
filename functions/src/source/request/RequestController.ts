@@ -37,7 +37,7 @@ router.post("/createRequest",async function (req : any, res: any){
             requestType : req.body?.requestType,
             requestTeamRef : req.body?.requestTeamRef || "default request",
             requestOrganisationRef : req.body?.requestOrganisationRef || "default request",
-            requestCreatedBy : req.headers?.currentUser?.userId,
+            requestCreatedBy : req.headers?.currentUser?._id,
             requestCreatedAt : Date.now()
         }).save();
         if (requestData) {
@@ -103,7 +103,7 @@ router.patch("/updateRequest",async function (req : any, res: any){
                     requestType : req.body?.requestType,
                     requestTeamRef : req.body?.requestTeamRef || "default query",
                     requestOrganisationRef : req.body?.requestOrganisationRef || "default query",
-                    requestUpdatedBy : req.headers?.currentUser?.userId,
+                    requestUpdatedBy : req.headers?.currentUser?._id,
                     requestUpdatedAt : Date.now()
                 }
         },

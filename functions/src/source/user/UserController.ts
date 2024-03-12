@@ -41,7 +41,9 @@ router.post("/createUser",async function (req : any, res: any){
             lastName : req.body?.lastName,
             email : req.body?.email,
             password : req.body.password,
-            userCreatedBy : req.headers?.currentUser?.userId,
+            userTeamRef : req.body?.userTeamRef || 1,
+            userOrganisationRef : req.body?.userOrganisationRef || 1,
+            userCreatedBy : req.headers?.currentUser?._id,
             userCreatedAt : Date.now()
         }).save();
         if (userData) {
@@ -111,7 +113,9 @@ router.patch("/updateUser",async function (req : any, res: any){
                     lastName : req.body?.lastName,
                     email : req.body?.email,
                     password : req.body.password,
-                    userUpdatedBy : req.headers?.currentUser?.userId,
+                    userTeamRef : req.body?.userTeamRef,
+                    userOrganisationRef : req.body?.userOrganisationRef,
+                    userUpdatedBy : req.headers?.currentUser?._id,
                     userUpdatedAt : Date.now()
                 }
         },
