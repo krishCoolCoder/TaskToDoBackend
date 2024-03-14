@@ -18,16 +18,16 @@ router.post("/createTodo",async function (req : any, res: any){
                 message : "Todo data cannot be empty or undefined."
             })
         }
-        if ((!req.body.todoTeamRef || req.body.todoTeamRef == "")) {
-            return res.status(400).send({
-                message : "Todo team reference cannot be empty or undefined."
-            })
-        }
-        if ((!req.body.todoOrganisationRef || req.body.todoOrganisationRef == "")) {
-            return res.status(400).send({
-                message : "Todo organisation reference cannot be empty or undefined."
-            })
-        }
+        // if ((!req.body.todoTeamRef || req.body.todoTeamRef == "")) {
+        //     return res.status(400).send({
+        //         message : "Todo team reference cannot be empty or undefined."
+        //     })
+        // }
+        // if ((!req.body.todoOrganisationRef || req.body.todoOrganisationRef == "")) {
+        //     return res.status(400).send({
+        //         message : "Todo organisation reference cannot be empty or undefined."
+        //     })
+        // }
 
         let todoData = await new Todo({
             todoCode : Math.floor(Math.random() * 9000) + 1000,
@@ -78,16 +78,16 @@ router.patch("/updateTodo",async function (req : any, res: any){
                 message : "Todo data cannot be empty or undefined."
             })
         }
-        if ((!req.body.todoTeamRef || req.body.todoTeamRef == "")) {
-            return res.status(400).send({
-                message : "Todo team reference cannot be empty or undefined."
-            })
-        }
-        if ((!req.body.todoOrganisationRef || req.body.todoOrganisationRef == "")) {
-            return res.status(400).send({
-                message : "Todo organisation reference cannot be empty or undefined."
-            })
-        }
+        // if ((!req.body.todoTeamRef || req.body.todoTeamRef == "")) {
+        //     return res.status(400).send({
+        //         message : "Todo team reference cannot be empty or undefined."
+        //     })
+        // }
+        // if ((!req.body.todoOrganisationRef || req.body.todoOrganisationRef == "")) {
+        //     return res.status(400).send({
+        //         message : "Todo organisation reference cannot be empty or undefined."
+        //     })
+        // }
 
         let todoData = await Todo.findOneAndUpdate(
             {_id : mongoose.Types.ObjectId.createFromHexString(req.body.id)},
