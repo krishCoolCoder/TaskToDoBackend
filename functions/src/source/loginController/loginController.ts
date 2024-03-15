@@ -66,13 +66,14 @@ router.post("/login", async function (req: any, res: any) {
         email : req.body.userMail,
         password : req.body.userPassword
     } , " the date now is this : ", Date.now(), " and the req.headers.current user is this : ", req.headers.currentUser);
+    console.log("The actual code is this : ",cryptoEncode(userData))
     if (userData.length !== 0) {
         userData["tokenCreatedAt"] = Date.now();
         res.status(200).send(
             {
                 message:"Successfully logged in.",
                 data : userData,
-                token : cryptoEncode(userData)
+                token : String(cryptoEncode(userData))
             }
             )
         } else if (userData === null){

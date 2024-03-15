@@ -97,9 +97,9 @@ router.patch("/updateTodo",async function (req : any, res: any){
                     todoData : req.body?.todoData,
                     todoTeamRef : req.body?.todoTeamRef,
                     todoOrganisationRef : req.body.todoOrganisationRef,
-                    todoCreatedBy : req.headers?.currentUser?.userId,
+                    todoCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id),
                     todoCreatedAt : Date.now(),
-                    todoUpdatedBy : req.headers?.currentUser?._id,
+                    todoUpdatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id),
                     requestUpdattodoUpdatedAtedAt : Date.now()
                 }
         },
