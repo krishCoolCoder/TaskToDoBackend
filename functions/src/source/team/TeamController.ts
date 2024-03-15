@@ -134,10 +134,11 @@ router.get("/teamList", async function (req: any, res: any){
                 "teamOrganisationMappings.userId" : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
             }
         } else {
-            query = {
-                "teamOrganisationMappings.organisationId":mongoose.Types.ObjectId.createFromHexString(req.query?.organisationId),
-                "teamOrganisationMappings.userId" : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
-            }
+            return res.status(500).send(
+                {
+                    message : "orgainsationId query parameter is required."
+                }
+                )
         }
         let teamList = await Team.aggregate(
             [

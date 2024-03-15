@@ -57,3 +57,6 @@ app.get('/', (req: any, res: any) => {
   });
 
   exports.app = functions.https.onRequest(app);
+  // app.listen(3000, () => {
+  //   return console.log(`Express is listening at http://localhost:${3000}`);
+  // });

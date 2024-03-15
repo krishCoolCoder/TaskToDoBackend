@@ -17,7 +17,7 @@ export function authenticationMiddleware(req: any, res: any, next:any){
       )
     }
     console.log("The testing thing : ", cryptoDecode(req.headers?.authentication))
-    req.headers['currentUser'] = cryptoDecode(req.headers?.authentication)[0];
+    req.headers['currentUser'] = cryptoDecode(req.headers?.authentication);
   }
   console.log("Log before the next()")
   next()
