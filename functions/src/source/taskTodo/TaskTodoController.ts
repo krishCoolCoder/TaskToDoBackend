@@ -126,6 +126,66 @@ router.patch("/updateTask",async function (req : any, res: any){
         )
     }
 })
+router.patch("/updateTaskStatus",async function (req : any, res: any){
+    try {
+
+        // validation 
+        if ((!req.body.id || req.body.id == "")) {
+            return res.status(400).send({
+                message : "id cannot be empty or undefined."
+            })
+        }
+        if ((!req.body.taskStatus || req.body.taskStatus == "")) {
+            return res.status(400).send({
+                message : "Task status cannot be empty or undefined."
+            })
+        }
+
+        let taskToDoData = await TaskToDo.findOneAndUpdate(
+            {_id : mongoose.Types.ObjectId.createFromHexString(req.body.id)},
+            {$set :
+                {
+                    taskNo : Math.floor(Math.random() * 9000) + 1000,
+                    taskTitle : req.body?.taskTitle,
+                    taskDescription : req.body?.taskDescription,
+                    taskStatus : req.body.taskStatus,
+                    taskProgress : req.body?.taskProgress,
+                    teamRef : req.body?.teamRef || 1,
+                    organisationRef : req.body?.organisationRef || 1,
+                    taskUpdatedBy : req.headers?.currentUser?._id,
+                    taskUpdatedAt : Date.now()
+                }
+        },
+        {
+            new : true
+        });
+        if (taskToDoData) {
+                    return res.status(200).send(
+                        {
+                            message : "Successfully saved the taskToDo data. ",
+                            data : taskToDoData
+                        }
+                        )
+                    
+            } else {
+                return res.status(500).send(
+                    {
+                        message : "Something went wrong and reported it.",
+                        data: taskToDoData
+                    }
+                    )
+            }
+    
+    } catch ( error : any ) {
+        console.log("The error in post->/task controller is this : ", error);
+        return res.status(500).send(
+            {
+                message: "Something went wron gand the issue is reported.",
+                errorMessage : error
+            }
+        )
+    }
+})
 
 router.get("/taskList", async function (req: any, res: any){
     try {
