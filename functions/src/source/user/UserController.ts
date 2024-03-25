@@ -152,7 +152,45 @@ router.patch("/updateUser",async function (req : any, res: any){
 
 router.get("/userList", async function (req: any, res: any){
     try {
-        let userList = await User.find({}).sort({userCreatedAt : -1});
+        let userList = await User.aggregate(
+            [
+                {
+                    $match : {}
+                },
+                {
+                    $lookup: {
+                      from: "userrolemappings",
+                      localField: "_id",
+                      foreignField: "userId",
+                      as: "userRoleMappings"
+                    }
+                },
+                {
+                    $lookup: {
+                      from: "userroles",
+                      localField: "userRoleMappings.roleId",
+                      foreignField: "_id",
+                      as: "userRoles"
+                    }
+                },
+                {
+                    $project : {
+                        _id: 1,
+                        userId : 1,
+                        userName : 1,
+                        firstName : 1,
+                        lastName : 1,
+                        email : 1,
+                        userCreatedBy : 1,
+                        userCreatedAt : 1,
+                        userUpdatedBy : 1,
+                        userUpdatedAt : 1,
+                        userRoleMappings : 1,
+                        userRoles: 1
+                    }
+                }
+            ]
+        )
         if (userList) {
                     return res.status(200).send(
                         {
