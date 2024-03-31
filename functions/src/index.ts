@@ -20,7 +20,8 @@ app.use("/request",require("./source/request/RequestController"))
 app.use("/todo",require("./source/todo/Todo"))
 app.use("/user",require("./source/user/UserController"))
 app.use("/organisation",require("./source/organisation/OrganisationController"))
-app.use("/team",require("./source/team/TeamController"))
+app.use("/team",require("./source/team/TeamController"));
+app.use("/project",require("./source/project/ProjectController"))
 
 
 
