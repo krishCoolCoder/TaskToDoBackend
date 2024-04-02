@@ -23,6 +23,7 @@ router.post("/createProject",async function (req : any, res: any){
             projectId : Math.floor(Math.random() * 9000) + 1000,
             projectName : req.body?.projectName,
             projectDescription : req.body?.projectDescription,
+            projectStatus : req.body?.projectStatus,
             projectCreatedBy : req.headers?.currentUser?._id,
             projectCreatedAt : Date.now()
         }).save();
@@ -70,6 +71,7 @@ router.patch("/updateProject",async function (req : any, res: any){
                 {
                     projectName : req.body?.projectName,
                     projectDescription : req.body?.projectDescription,
+                    projectStatus : req.body?.projectStatus,
                     projectUpdatedBy : req.headers?.currentUser?._id,
                     projectUpdatedAt : Date.now()
                 }
