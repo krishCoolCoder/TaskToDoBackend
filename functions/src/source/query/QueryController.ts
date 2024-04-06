@@ -20,7 +20,7 @@ router.post("/createQuery",async function (req : any, res: any){
         }
         if ((!req.body.queryStatus || req.body.queryStatus == "")) {
             return res.status(400).send({
-                message : "query title cannot be empty or undefined."
+                message : "query status cannot be empty or undefined."
             })
         }
         if ((!req.body.queryType || req.body.queryType == "")) {
@@ -40,7 +40,7 @@ router.post("/createQuery",async function (req : any, res: any){
             queryDescription : req.body?.queryDescription,
             queryStatus : req.body.queryStatus,
             queryType : req.body?.queryType,
-            taskQueryRef : req.body?.taskQueryRef || "default query",
+            taskQueryRef : req.body?.taskQueryRef,
             queryCreatedBy : req.headers?.currentUser?._id,
             queryCreatedAt : Date.now()
         }).save();
@@ -110,7 +110,7 @@ router.patch("/updateQuery",async function (req : any, res: any){
                     queryDescription : req.body?.queryDescription,
                     queryStatus : req.body.queryStatus,
                     queryType : req.body?.queryType,
-                    taskQueryRef : req.body?.taskQueryRef || "default query",
+                    taskQueryRef : req.body?.taskQueryRef,
                     queryUpdatedBy : req.headers?.currentUser?._id,
                     queryUpdatedAt : Date.now()
                 }

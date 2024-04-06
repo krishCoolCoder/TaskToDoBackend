@@ -10,6 +10,7 @@ router.use(bodyParser.raw());
 
 router.post("/createTask",async function (req : any, res: any){
     try {
+        console.log("Into the controller ")
 
         // validation 
         if ((!req.body.taskTitle || req.body.taskTitle == "")) {
@@ -22,15 +23,15 @@ router.post("/createTask",async function (req : any, res: any){
                 message : "Task title cannot be empty or undefined."
             })
         }
-
+        console.log("The paylaod is this : ", req.body)
         let taskToDoData = await new TaskToDo({
             taskNo : Math.floor(Math.random() * 9000) + 1000,
             taskTitle : req.body?.taskTitle,
             taskDescription : req.body?.taskDescription,
             taskStatus : req.body.taskStatus,
             taskProgress : req.body?.taskProgress,
-            teamRef : req.body?.teamRef || 1,
-            organisationRef : req.body?.organisationRef || 1,
+            teamRef : req.body?.teamRef,
+            organisationRef : req.body?.organisationRef,
             taskCreatedBy : req.headers?.currentUser?._id,
             taskCreatedAt : Date.now()
         }).save();
@@ -150,8 +151,8 @@ router.patch("/updateTaskStatus",async function (req : any, res: any){
                     taskDescription : req.body?.taskDescription,
                     taskStatus : req.body.taskStatus,
                     taskProgress : req.body?.taskProgress,
-                    teamRef : req.body?.teamRef || 1,
-                    organisationRef : req.body?.organisationRef || 1,
+                    teamRef : req.body?.teamRef,
+                    organisationRef : req.body?.organisationRef,
                     taskUpdatedBy : req.headers?.currentUser?._id,
                     taskUpdatedAt : Date.now()
                 }
@@ -189,7 +190,29 @@ router.patch("/updateTaskStatus",async function (req : any, res: any){
 
 router.get("/taskList", async function (req: any, res: any){
     try {
-        let taskToDoData = await TaskToDo.find({}).sort({taskCreatedAt : -1});
+        console.log("The query data is this : ",req.query);
+        let filter : any = {};
+        if ( Object.keys(req.query).length > 0){
+            if ( req.query.hasOwnProperty("projectId")){
+                        filter["projectRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.projectId)
+            } 
+            if (req.query.hasOwnProperty("teamId")){
+                        filter["teamRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.teamId)
+            }
+            if (req.query.hasOwnProperty("organisationId")){
+                        filter["organisationRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.organisationId)
+            }
+        }
+        console.log("The filter is this : ", filter)
+        let taskToDoData = await TaskToDo.aggregate(
+            [
+                {
+                    $match: 
+                        filter
+                }
+            ]
+        )
+        // let taskToDoData = await TaskToDo.find({}).sort({taskCreatedAt : -1});
         if (taskToDoData) {
                     return res.status(200).send(
                         {

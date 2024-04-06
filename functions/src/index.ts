@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+// const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
 
@@ -57,7 +57,7 @@ app.get('/', (req: any, res: any) => {
     res.json({message: 'Hello world.',task: "Hi there, now it is time to work on a miracle."});
   });
 
-  exports.app = functions.https.onRequest(app);
-  // app.listen(3000, () => {
-  //   return console.log(`Express is listening at http://localhost:${3000}`);
-  // });
+  // exports.app = functions.https.onRequest(app);
+  app.listen(3000, () => {
+    return console.log(`Express is listening at http://localhost:${3000}`);
+  });
