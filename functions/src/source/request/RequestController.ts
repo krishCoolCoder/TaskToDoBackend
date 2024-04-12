@@ -35,6 +35,7 @@ router.post("/createRequest",async function (req : any, res: any){
             requestDescription : req.body?.requestDescription,
             requestStatus : req.body.requestStatus,
             requestType : req.body?.requestType,
+            requestProjectRef : req.body?.requestProjectRef,
             requestTeamRef : req.body?.requestTeamRef ,
             requestOrganisationRef : req.body?.requestOrganisationRef,
             requestCreatedBy : req.headers?.currentUser?._id,
@@ -101,6 +102,7 @@ router.patch("/updateRequest",async function (req : any, res: any){
                     requestDescription : req.body?.requestDescription,
                     requestStatus : req.body.requestStatus,
                     requestType : req.body?.requestType,
+                    requestProjectRef : req.body?.requestProjectRef,
                     requestTeamRef : req.body?.requestTeamRef,
                     requestOrganisationRef : req.body?.requestOrganisationRef,
                     requestUpdatedBy : req.headers?.currentUser?._id,
@@ -140,7 +142,31 @@ router.patch("/updateRequest",async function (req : any, res: any){
 
 router.get("/requestList", async function (req: any, res: any){
     try {
-        let requestData = await Request.find({}).sort({requestCreatedAt : -1});
+        // let requestData = await Request.find({}).sort({requestCreatedAt : -1});
+        let filter : any = {};
+        if ( Object.keys(req.query).length > 0){
+            if ( req.query.hasOwnProperty("projectId")){
+                        filter["requestProjectRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.projectId)
+            } 
+            if (req.query.hasOwnProperty("teamId")){
+                        filter["requestTeamRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.teamId)
+            }
+            if (req.query.hasOwnProperty("organisationId")){
+                        filter["requestOrganisationRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.organisationId)
+            }
+        }
+        console.log("The filter is this : ", {
+            ...filter,
+        createdAt : req.headers?.currentUser?._id})
+        let requestData = await Request.aggregate(
+            [
+                {
+                    $match : {
+                        ...filter,
+                        requestCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)}
+                }
+            ]
+        );
         if (requestData) {
                     return res.status(200).send(
                         {

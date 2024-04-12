@@ -148,7 +148,7 @@ router.patch("/updateQuery",async function (req : any, res: any){
 
 router.get("/queryList", async function (req: any, res: any){
     try {
-        let queryData = await Query.find({}).sort({queryCreatedAt : -1});
+        let queryData = await Query.find({queryCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)}).sort({queryCreatedAt : -1});
         if (queryData) {
                     return res.status(200).send(
                         {

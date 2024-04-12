@@ -10,7 +10,7 @@ router.use(bodyParser.raw());
 
 router.post("/createTask",async function (req : any, res: any){
     try {
-        console.log("Into the controller ")
+        console.log("Into the controller ",req.body)
 
         // validation 
         if ((!req.body.taskTitle || req.body.taskTitle == "")) {
@@ -32,6 +32,7 @@ router.post("/createTask",async function (req : any, res: any){
             taskProgress : req.body?.taskProgress,
             teamRef : req.body?.teamRef,
             organisationRef : req.body?.organisationRef,
+            projectRef : req.body?.projectRef,
             taskCreatedBy : req.headers?.currentUser?._id,
             taskCreatedAt : Date.now()
         }).save();
@@ -91,8 +92,9 @@ router.patch("/updateTask",async function (req : any, res: any){
                     taskDescription : req.body?.taskDescription,
                     taskStatus : req.body.taskStatus,
                     taskProgress : req.body?.taskProgress,
-                    teamRef : req.body?.teamRef || 1,
-                    organisationRef : req.body?.organisationRef || 1,
+                    teamRef : req.body?.teamRef,
+                    organisationRef : req.body?.organisationRef,
+                    projectRef : req.body?.projectRef,
                     taskUpdatedBy : req.headers?.currentUser?._id,
                     taskUpdatedAt : Date.now()
                 }
@@ -203,15 +205,29 @@ router.get("/taskList", async function (req: any, res: any){
                         filter["organisationRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.organisationId)
             }
         }
-        console.log("The filter is this : ", filter)
+        console.log("The filter is this : ", {
+            ...filter,
+            taskCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+        })
         let taskToDoData = await TaskToDo.aggregate(
             [
                 {
                     $match: 
-                        filter
+                    {
+                        ...filter,
+                        taskCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+                    }
+                },
+                {
+                    $lookup : {
+                        from : "queries",
+                        localField : "_id",
+                        foreignField: "taskQueryRef",
+                        as : "queries"
+                    }
                 }
             ]
-        )
+        );
         // let taskToDoData = await TaskToDo.find({}).sort({taskCreatedAt : -1});
         if (taskToDoData) {
                     return res.status(200).send(
