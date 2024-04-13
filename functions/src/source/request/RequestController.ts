@@ -97,7 +97,6 @@ router.patch("/updateRequest",async function (req : any, res: any){
             {_id : mongoose.Types.ObjectId.createFromHexString(req.body.id)},
             {$set :
                 {
-                    requestCode : Math.floor(Math.random() * 9000) + 1000,
                     requestTitle : req.body?.requestTitle,
                     requestDescription : req.body?.requestDescription,
                     requestStatus : req.body.requestStatus,

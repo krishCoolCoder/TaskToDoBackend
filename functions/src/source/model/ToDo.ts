@@ -6,6 +6,7 @@ const todo = new Schema(
     {
         todoCode : {type : String, default : ""},
         todoData : {type : String, default : ""},
+        todoProjectRef : {type: mongoose.Schema.Types.ObjectId , default: null},
         todoTeamRef : {type: mongoose.Schema.Types.ObjectId , default: null},
         todoOrganisationRef : {type: mongoose.Schema.Types.ObjectId , default: null},
         todoUpdatedBy : {type: mongoose.Schema.Types.ObjectId , ref: 'users' , default: null},

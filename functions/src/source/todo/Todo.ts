@@ -28,10 +28,19 @@ router.post("/createTodo",async function (req : any, res: any){
         //         message : "Todo organisation reference cannot be empty or undefined."
         //     })
         // }
-
+        console.log("The payload is this : ",{
+            todoCode : Math.floor(Math.random() * 9000) + 1000,
+            todoData : req.body?.todoData,
+            todoProjectRef : req.body?.todoProjectRef,
+            todoTeamRef : req.body?.todoTeamRef,
+            todoOrganisationRef : req.body.todoOrganisationRef,
+            todoCreatedBy : req.headers?.currentUser?._id,
+            todoCreatedAt : Date.now()
+        })
         let todoData = await new Todo({
             todoCode : Math.floor(Math.random() * 9000) + 1000,
             todoData : req.body?.todoData,
+            todoProjectRef : req.body?.todoProjectRef,
             todoTeamRef : req.body?.todoTeamRef,
             todoOrganisationRef : req.body.todoOrganisationRef,
             todoCreatedBy : req.headers?.currentUser?._id,
@@ -95,6 +104,7 @@ router.patch("/updateTodo",async function (req : any, res: any){
                 {
                     todoCode : Math.floor(Math.random() * 9000) + 1000,
                     todoData : req.body?.todoData,
+                    todoProjectRef : req.body?.todoProjectRef,
                     todoTeamRef : req.body?.todoTeamRef,
                     todoOrganisationRef : req.body.todoOrganisationRef,
                     todoCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id),
@@ -136,7 +146,34 @@ router.patch("/updateTodo",async function (req : any, res: any){
 
 router.get("/todoList", async function (req: any, res: any){
     try {
-        let todoList = await Todo.find({}).sort({todoCreatedAt : -1});
+        // let todoList = await Todo.find({todoCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)}).sort({todoCreatedAt : -1});
+        let filter : any = {};
+        if ( Object.keys(req.query).length > 0){
+            if ( req.query.hasOwnProperty("projectId")){
+                        filter["todoProjectRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.projectId)
+            } 
+            if (req.query.hasOwnProperty("teamId")){
+                        filter["todoTeamRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.teamId)
+            }
+            if (req.query.hasOwnProperty("organisationId")){
+                        filter["todoOrganisationRef"] = mongoose.Types.ObjectId.createFromHexString(req.query.organisationId)
+            }
+        }
+        console.log("The filter is this : ", {
+            ...filter,
+            taskCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+        })
+        let todoList = await Todo.aggregate(
+            [
+                {
+                    $match: 
+                    {
+                        ...filter,
+                        todoCreatedBy : mongoose.Types.ObjectId.createFromHexString(req.headers?.currentUser?._id)
+                    }
+                }
+            ]
+        )
         if (todoList) {
                     return res.status(200).send(
                         {
