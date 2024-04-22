@@ -152,6 +152,32 @@ router.patch("/updateUser",async function (req : any, res: any){
 
 router.get("/userList", async function (req: any, res: any){
     try {
+        console.log("The current user is this : ", req.headers.currentUser);
+        // req.headers.currentUser.userRoles.filter((data: any)=> {
+        //     return data = "SuperAdmin"
+        // })
+        let filter : any = {};
+        let roles = req.headers.currentUser.userRoles.map((obj : any) => obj.roleName).join(',');
+        console.log("The roles are : ", roles);
+        if ( roles.includes("SuperAdmin")){
+            // filter["userRoles.roleName"] = "SuperAdmin";
+            filter = {}
+        } else if ( roles.includes("Admin")) {
+            // filter["userRoles.roleName"] = "Admin";
+            filter = {
+                $or : [
+                    {"userRoles.roleName" : "Admin"}
+                ]
+            }
+        } else if ( roles.includes("User")) {
+            // filter["userRoles.roleName"] = "User";
+            filter = {
+                $or : [
+                    {"userRoles.roleName" : "User"}
+                ]
+            }
+        }
+        console.log("The filter is this : ", filter);
         let userList = await User.aggregate(
             [
                 {
@@ -172,6 +198,9 @@ router.get("/userList", async function (req: any, res: any){
                       foreignField: "_id",
                       as: "userRoles"
                     }
+                },
+                {
+                    $match : filter
                 },
                 {
                     $project : {

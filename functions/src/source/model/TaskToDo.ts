@@ -9,6 +9,7 @@ const taskToDo = new Schema(
         taskDescription : {type : String, default : ""},
         taskStatus : {type : String, default : ""},
         taskProgress : {type : String, default : ""},
+        taskAssignedTo : {type : mongoose.Schema.Types.ObjectId, default : null},
         projectRef : {type : mongoose.Schema.Types.ObjectId, default : null},
         teamRef : {type: mongoose.Schema.Types.ObjectId , default: null},
         organisationRef : {type: mongoose.Schema.Types.ObjectId , default: null},
