@@ -192,6 +192,60 @@ router.patch("/updateTaskStatus",async function (req : any, res: any){
         )
     }
 })
+router.patch("/assignTask",async function (req : any, res: any){
+    try {
+
+        // validation 
+        if ((!req.body.id || req.body.id == "")) {
+            return res.status(400).send({
+                message : "assignTo property cannot be empty or undefined."
+            })
+        }
+        if ((!req.body.assignTo || req.body.assignTo == "")) {
+            return res.status(400).send({
+                message : "assignTo property cannot be empty or undefined."
+            })
+        }
+
+        let taskToDoData = await TaskToDo.findOneAndUpdate(
+            {_id : mongoose.Types.ObjectId.createFromHexString(req.body.id)},
+            {$set :
+                {
+                    taskAssignedTo : req.body?.assignTo,
+                    taskUpdatedBy : req.headers?.currentUser?._id,
+                    taskUpdatedAt : Date.now()
+                }
+        },
+        {
+            new : true
+        });
+        if (taskToDoData) {
+                    return res.status(200).send(
+                        {
+                            message : "Successfully saved the taskToDo data. ",
+                            data : taskToDoData
+                        }
+                        )
+                    
+            } else {
+                return res.status(500).send(
+                    {
+                        message : "Something went wrong and reported it.",
+                        data: taskToDoData
+                    }
+                    )
+            }
+    
+    } catch ( error : any ) {
+        console.log("The error in post->/task controller is this : ", error);
+        return res.status(500).send(
+            {
+                message: "Something went wron gand the issue is reported.",
+                errorMessage : error
+            }
+        )
+    }
+})
 
 router.get("/taskList", async function (req: any, res: any){
     try {
@@ -227,6 +281,37 @@ router.get("/taskList", async function (req: any, res: any){
                         localField : "_id",
                         foreignField: "taskQueryRef",
                         as : "queries"
+                    }
+                }, 
+                {
+                    $lookup : {
+                        from : "users",
+                        localField : "taskCreatedBy",
+                        foreignField : "_id",
+                        as : "createdByUser"
+                    }
+                },
+                {
+                    $addFields: {
+                        taskCreatedBy: { $arrayElemAt: ["$createdByUser", 0] } // Replace taskCreatedBy with the embedded createdByUser object
+                    }
+                },
+                {
+                    $lookup : {
+                        from : "users",
+                        localField : "taskAssignedTo",
+                        foreignField : "_id",
+                        as : "taskAssignedTo"
+                    }
+                },
+                {
+                    $addFields: {
+                        taskAssignedTo: { $arrayElemAt: ["$taskAssignedTo", 0] } // Replace taskCreatedBy with the embedded createdByUser object
+                    }
+                },
+                {
+                    $project: {
+                        createdByUser: 0 // Exclude the createdByUser field from the output
                     }
                 }
             ]
