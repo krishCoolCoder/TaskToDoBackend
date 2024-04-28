@@ -198,7 +198,7 @@ router.patch("/assignTask",async function (req : any, res: any){
         // validation 
         if ((!req.body.id || req.body.id == "")) {
             return res.status(400).send({
-                message : "assignTo property cannot be empty or undefined."
+                message : "id property cannot be empty or undefined."
             })
         }
         if ((!req.body.assignTo || req.body.assignTo == "")) {
