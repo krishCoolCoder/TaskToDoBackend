@@ -22,6 +22,7 @@ app.use("/user",require("./source/user/UserController"))
 app.use("/organisation",require("./source/organisation/OrganisationController"))
 app.use("/team",require("./source/team/TeamController"));
 app.use("/project",require("./source/project/ProjectController"))
+app.use("/ai",require("./source/tasktodoAi/tasktodoAiController"))
 
 
 
