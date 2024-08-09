@@ -4,7 +4,7 @@ export async function documentValidation (documentInput : string){
 let data = JSON.stringify({
   "model": "gpt-3.5-turbo-instruct",
   "prompt": documentInput,
-  "max_tokens": 3000,
+  "max_tokens": 3500,
   "temperature": 0
 });
 let secretKey = atob("c2stcHJvai1nUnlnSmNWUmpRdndVOEdWWDhDTVQzQmxia0ZKNTlDbkFNdlpQOEp0emY0YngwQ0M=");
@@ -22,8 +22,8 @@ let config = {
 
 return await axios.request(config)
 .then((response: any) => {
-    console.log(JSON.stringify(response.data));
-    return JSON.parse(response.data.choices[0].text);
+    console.log("The stringified response is this : ", JSON.stringify(response.data.choices[0].text));
+    return JSON.parse(JSON.stringify(response.data.choices[0].text));
 })
 .catch((error: any) => {
   console.log(error);

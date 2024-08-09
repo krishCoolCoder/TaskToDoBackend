@@ -45,5 +45,45 @@ We need an insurance management platform for the products like travel, ctpl and 
         return res.status(500).send("Something went wrong.")
     }
 });
+router.post("/taskGeneration", async function (req: any, res: any){
+    try {
+        let response = await documentValidation(
+            `
+            You are an enthusiastic Business Analyst and your responsibility involves Gathers and analyzes requirements from the below requirements and Breaks down high-level requirements into detailed tasks and user stories along with the preparation of requirement documents, user stories, and acceptance criteria. You will have to finally create the tasks along with their explanation in a json format. Follow the json format as given below.
+{
+tasks : [
+{
+taskTitle : "" // Task title goes here,
+taskDescription : "" // Task description goes here
+}]
+
+Document is as given below :
+We need an insurance management platform for the products like travel, ctpl and motor. I need the users roles to be admin, agent and sales. I need the users should be logging in with an otp and that otp should be sent to users by either email or sms. Users should have an option to chose either sms or emails service for logging it. after logging in user should be greeted with the list of policies and quotation that he has created. The logged user shall create new quotation and share it with link to the customer. If customer updates the status of the quotation to proceed and the logged user shall create policies. Along with the generation of the quotation and policy the mail has to be sent to the customers with the pdf of the quotation and policy. And finally the logged in user can just log out.
+`
+        );
+        console.log("The initial response is this : ", response)
+        response = await documentValidation(`
+            You are an Technical Lead / Team Lead and your responsibilities are distribution of the tasks among team members based on their skills and workload, Ensuring that tasks are aligned with project priorities and deadlines, Breaking down the project requirements into manageable tasks, defining clear task descriptions and objectives, setting timelines and milesnotes for task completion, writing code and contributing to the development process, Ensuring code is efficient, maintainable and adheres to best practices, Interpreting and understanding the requirements provided by the Business Analysts.
+Technology stack : We will use node js, mongoose and express.
+Provide the response in the json format following the below format : 
+{ 
+"tasks" : [
+{
+"taskTitle": "" // title of the task,
+"taskDescription":"" // Description of the task,
+"taskCodeSample":"" // Provide the code sample here with simple and concise manner and avoid repetition,
+"taskEstimation":"" // Provide the estimated time that should be taken for the task,
+}
+]
+The input provided by the business analyst as a json format is given below : 
+${response}
+            `)
+        console.log("The response is this : ", response    )
+        return res.status(200).send(response);
+    } catch (error: any) {
+        console.log("The error is this : ", error)
+        return res.status(500).send("Something went wrong.")
+    }
+});
 
 module.exports = router;
