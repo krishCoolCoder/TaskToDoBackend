@@ -1,10 +1,27 @@
 import express from 'express';
-// import { PrismaClient } from '@prisma/client';
-// import { headstart } from './startup/headstart'
-import {connectDB} from "./dbCoonection"
-// import { authorisationMiddleware } from './src/middleware/AuthenticationMiddleware';
+import { connectDB } from './dbCoonection';
+import { authenticationMiddleware } from './src/middleware/authentication.middleware';
+import userRoutes from './src/modules/user/userRoute';
+import authRoutes from './src/modules/auth/authRoute';
+
 const app = express();
 const port = 3000;
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Authentication Middleware
+app.use(authenticationMiddleware);
+
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running' });
+});
 
 async function startServer() {
   try {
