@@ -6,10 +6,7 @@ const uri = "mongodb+srv://tasktodouser:tasktodouser@tasktodo.ir517qa.mongodb.ne
 export function connectDB() {
 
   // Connect to MongoDB
-mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(uri)
 .then(() => {
   console.log('Connected to MongoDB');
 })
