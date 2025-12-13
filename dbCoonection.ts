@@ -3,16 +3,11 @@ const mongoose = require('mongoose');
 // const uri = "mongodb+srv://tasktodouser:tasktodouser@tasktodo.ir517qa.mongodb.net/?retryWrites=true&w=majority&appName=TaskToDo";
 const uri = "mongodb+srv://tasktodouser:tasktodouser@tasktodo.ir517qa.mongodb.net/TaskToDo";
 
-export function connectDB() {
-
+export async function connectDB() {
   // Connect to MongoDB
-mongoose.connect(uri)
-.then(() => {
+  await mongoose.connect(uri);
   console.log('Connected to MongoDB');
-})
-.catch((error: any) => {
-  console.error('Error connecting to MongoDB:', error);
-});
+}
 
     // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 // const client = new MongoClient(uri, {
@@ -35,5 +30,3 @@ mongoose.connect(uri)
 //     }
 //   }
 //   run().then(()=>{console.log("Connected to db.")}).catch(console.dir);
-
-}

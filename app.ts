@@ -5,9 +5,17 @@ import {connectDB} from "./dbCoonection"
 // import { authorisationMiddleware } from './src/middleware/AuthenticationMiddleware';
 const app = express();
 const port = 3000;
-connectDB();
 
+async function startServer() {
+  try {
+    await connectDB();
+    app.listen(port, () => {
+      console.log(`Express is listening at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error);
+    process.exit(1);
+  }
+}
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
-});
+startServer();
