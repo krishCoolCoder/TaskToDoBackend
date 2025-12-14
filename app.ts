@@ -3,6 +3,8 @@ import { connectDB } from './dbCoonection';
 import { authenticationMiddleware } from './src/middleware/authentication.middleware';
 import userRoutes from './src/modules/user/userRoute';
 import authRoutes from './src/modules/auth/authRoute';
+import designationMasterRoutes from './src/modules/designationMaster/designationMasterRoute';
+import userDesignationMappingRoutes from './src/modules/userDesignationMapping/userDesignationMappingRoute';
 
 const app = express();
 const port = 3000;
@@ -17,6 +19,8 @@ app.use(authenticationMiddleware);
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/designations', designationMasterRoutes);
+app.use('/api/user-designation-mappings', userDesignationMappingRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
