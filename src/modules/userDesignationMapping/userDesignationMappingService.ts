@@ -26,7 +26,7 @@ export class UserDesignationMappingService {
         data.designationId
       );
       if (existingMapping) {
-        return { success: false, message: 'User already has this designation' };
+        return { success: false, message: 'User designation mapping already exists' };
       }
 
       const mappingData: Partial<IUserDesignationMapping> = {
@@ -122,7 +122,7 @@ export class UserDesignationMappingService {
           newDesignationId
         );
         if (duplicateMapping && duplicateMapping._id?.toString() !== id) {
-          return { success: false, message: 'User already has this designation' };
+          return { success: false, message: 'User designation mapping already exists' };
         }
       }
 
