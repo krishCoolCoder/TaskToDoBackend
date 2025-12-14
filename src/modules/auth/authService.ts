@@ -1,8 +1,15 @@
 import jwt from 'jsonwebtoken';
+import CryptoJS from 'crypto-js';
 import { authRepository } from './authRepository';
 import { IUser } from '../../models/user';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const PASSWORD_SECRET = process.env.PASSWORD_SECRET || 'password-encryption-secret-key';
+
+// Hash password using SHA256 with secret
+function hashPassword(password: string): string {
+  return CryptoJS.HmacSHA256(password, PASSWORD_SECRET).toString();
+}
 
 // Store invalidated tokens (in production, use Redis or database)
 const invalidatedTokens: Set<string> = new Set();
@@ -54,8 +61,9 @@ export class AuthService {
         return { success: false, message: 'Your account is inactive. Please contact support.' };
       }
 
-      // Simple password comparison (in production, use bcrypt)
-      if (user.password !== password) {
+      // Compare hashed password
+      const hashedInputPassword = hashPassword(password);
+      if (hashedInputPassword !== user.password) {
         return { success: false, message: 'Invalid email or password' };
       }
 
@@ -126,7 +134,9 @@ export class AuthService {
         return { success: false, message: 'Invalid reset token' };
       }
 
-      await authRepository.updatePassword(decoded.userId, newPassword);
+      // Hash the new password before saving
+      const hashedPassword = hashPassword(newPassword);
+      await authRepository.updatePassword(decoded.userId, hashedPassword);
 
       return { success: true, message: 'Password reset successful' };
     } catch (error: any) {

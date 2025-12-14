@@ -1,6 +1,14 @@
 import { userRepository } from './userRepository';
 import { IUser } from '../../models/user';
 import mongoose from 'mongoose';
+import CryptoJS from 'crypto-js';
+
+const PASSWORD_SECRET = process.env.PASSWORD_SECRET || 'password-encryption-secret-key';
+
+// Hash password using SHA256 with secret
+function hashPassword(password: string): string {
+  return CryptoJS.HmacSHA256(password, PASSWORD_SECRET).toString();
+}
 
 export class UserService {
   async createUser(userData: Partial<IUser>, createdById?: string): Promise<{ success: boolean; data?: IUser; message: string }> {
@@ -17,8 +25,12 @@ export class UserService {
         return { success: false, message: 'Mobile number already exists' };
       }
 
+      // Hash the password
+      const hashedPassword = hashPassword(userData.password!);
+
       const userDataWithCreator: Partial<IUser> = {
         ...userData,
+        password: hashedPassword,
         ...(createdById && mongoose.Types.ObjectId.isValid(createdById) 
           ? { createdBy: new mongoose.Types.ObjectId(createdById) } 
           : {})
@@ -79,6 +91,11 @@ export class UserService {
         if (mobileExists) {
           return { success: false, message: 'Mobile number already exists' };
         }
+      }
+
+      // If password is being updated, hash it
+      if (updateData.password) {
+        updateData.password = hashPassword(updateData.password);
       }
 
       const updatedUser = await userRepository.update(id, updateData);
