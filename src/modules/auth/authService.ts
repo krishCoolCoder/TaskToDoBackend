@@ -2,6 +2,9 @@ import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 import { authRepository } from './authRepository';
 import { IUser } from '../../models/user';
+import { userProjectMappingRepository } from '../userProjectMapping/userProjectMappingRepository';
+import { userRoleMappingRepository } from '../userRoleMapping/userRoleMappingRepository';
+import { userDesignationMappingRepository } from '../userDesignationMapping/userDesignationMappingRepository';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const PASSWORD_SECRET = process.env.PASSWORD_SECRET || 'password-encryption-secret-key';
@@ -39,7 +42,7 @@ export class AuthService {
     }
   }
 
-  async login(email: string, password: string): Promise<{ success: boolean; data?: { user: Partial<IUser>; token: string }; message: string }> {
+  async login(email: string, password: string): Promise<{ success: boolean; data?: any; message: string }> {
     try {
       if (!email || !password) {
         return { success: false, message: 'Email and password are required' };
@@ -69,6 +72,18 @@ export class AuthService {
 
       const token = this.generateToken(user);
 
+      // Fetch user's mapped projects
+      const userProjects = await userProjectMappingRepository.findByUserId(user._id.toString());
+      const projects = userProjects.map((mapping: any) => mapping.projectRefId);
+
+      // Fetch user's mapped roles
+      const userRoles = await userRoleMappingRepository.findByUserId(user._id.toString());
+      const roles = userRoles.map((mapping: any) => mapping.roleRefId);
+
+      // Fetch user's mapped designations
+      const userDesignations = await userDesignationMappingRepository.findByUserId(user._id.toString());
+      const designations = userDesignations.map((mapping: any) => mapping.designationId);
+
       // Remove password from response
       const userResponse = {
         _id: user._id,
@@ -82,7 +97,13 @@ export class AuthService {
 
       return {
         success: true,
-        data: { user: userResponse, token },
+        data: { 
+          user: userResponse, 
+          token,
+          projects,
+          roles,
+          designations
+        },
         message: 'Login successful'
       };
     } catch (error: any) {
