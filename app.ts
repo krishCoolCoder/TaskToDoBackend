@@ -7,6 +7,8 @@ import designationMasterRoutes from './src/modules/designationMaster/designation
 import userDesignationMappingRoutes from './src/modules/userDesignationMapping/userDesignationMappingRoute';
 import roleMasterRoutes from './src/modules/roleMaster/roleMasterRoute';
 import userRoleMappingRoutes from './src/modules/userRoleMapping/userRoleMappingRoute';
+import projectRoutes from './src/modules/project/projectRoute';
+import userProjectMappingRoutes from './src/modules/userProjectMapping/userProjectMappingRoute';
 
 const app = express();
 const port = 3000;
@@ -25,6 +27,8 @@ app.use('/api/designations', designationMasterRoutes);
 app.use('/api/user-designation-mappings', userDesignationMappingRoutes);
 app.use('/api/roles', roleMasterRoutes);
 app.use('/api/user-role-mappings', userRoleMappingRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/user-project-mappings', userProjectMappingRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
