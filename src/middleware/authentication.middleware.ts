@@ -18,6 +18,7 @@ const publicRoutes = [
   '/api/auth/forgot-password',
   '/api/auth/reset-password',
   '/api/users', // POST for registration
+  '/api/global-settings/status', // Public endpoint for checking app status
   '/health'
 ];
 

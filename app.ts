@@ -10,6 +10,7 @@ import userRoleMappingRoutes from './src/modules/userRoleMapping/userRoleMapping
 import projectRoutes from './src/modules/project/projectRoute';
 import userProjectMappingRoutes from './src/modules/userProjectMapping/userProjectMappingRoute';
 import taskRoutes from './src/modules/task/taskRoute';
+import globalSettingRoutes from './src/modules/globalSetting/globalSettingRoute';
 
 const app = express();
 const port = 3000;
@@ -31,6 +32,7 @@ app.use('/api/user-role-mappings', userRoleMappingRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/user-project-mappings', userProjectMappingRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/global-settings', globalSettingRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
