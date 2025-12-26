@@ -39,3 +39,4 @@ roleMasterSchema.pre('findOneAndUpdate', function(next) {
 
 export const RoleMaster = mongoose.model<IRoleMaster>('RoleMaster', roleMasterSchema);
 
+

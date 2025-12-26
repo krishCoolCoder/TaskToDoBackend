@@ -57,3 +57,4 @@ export class GlobalSettingRepository {
 
 export const globalSettingRepository = new GlobalSettingRepository();
 
+

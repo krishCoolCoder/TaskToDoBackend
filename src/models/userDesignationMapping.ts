@@ -45,3 +45,4 @@ userDesignationMappingSchema.pre('findOneAndUpdate', function(next) {
 
 export const UserDesignationMapping = mongoose.model<IUserDesignationMapping>('UserDesignationMapping', userDesignationMappingSchema);
 
+

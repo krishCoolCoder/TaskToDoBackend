@@ -45,3 +45,4 @@ userProjectMappingSchema.pre('findOneAndUpdate', function(next) {
 
 export const UserProjectMapping = mongoose.model<IUserProjectMapping>('UserProjectMapping', userProjectMappingSchema);
 
+

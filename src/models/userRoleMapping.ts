@@ -45,3 +45,4 @@ userRoleMappingSchema.pre('findOneAndUpdate', function(next) {
 
 export const UserRoleMapping = mongoose.model<IUserRoleMapping>('UserRoleMapping', userRoleMappingSchema);
 
+

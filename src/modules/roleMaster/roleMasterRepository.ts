@@ -50,3 +50,4 @@ export class RoleMasterRepository {
 
 export const roleMasterRepository = new RoleMasterRepository();
 
+

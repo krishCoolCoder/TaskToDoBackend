@@ -39,3 +39,4 @@ designationMasterSchema.pre('findOneAndUpdate', function(next) {
 
 export const DesignationMaster = mongoose.model<IDesignationMaster>('DesignationMaster', designationMasterSchema);
 
+

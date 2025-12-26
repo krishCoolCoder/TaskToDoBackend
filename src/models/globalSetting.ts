@@ -81,3 +81,4 @@ globalSettingSchema.pre('findOneAndUpdate', function(next) {
 
 export const GlobalSetting = mongoose.model<IGlobalSetting>('GlobalSetting', globalSettingSchema);
 
+
